@@ -20,9 +20,8 @@ jobs:
       - name: Restore from cache and install vcpkg
         uses: lukka/run-vcpkg@v5
         with:
-          setupOnly: true
+          vcpkgArguments: 'boost libevent qt5 qt5-graphicaleffects qt5-quickcontrols'
+          vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
+          vcpkgTriplet: 'x64-windows'
+          vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
 
-      - name: Install dependencies
-        run: |
-          $VCPKG_ROOT/vcpkg install boost libevent qt5 qt5-graphicaleffects qt5-quickcontrols --triplet x64-windows
-        shell: bash
