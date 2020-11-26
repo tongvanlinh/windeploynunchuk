@@ -1,0 +1,28 @@
+name: win
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+ 
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Restore from cache and install vcpkg
+        uses: lukka/run-vcpkg@v5
+        with:
+          setupOnly: true
+
+      - name: Install dependencies
+        run: |
+          $VCPKG_ROOT/vcpkg install boost libevent qt5 qt5-graphicaleffects qt5-quickcontrols --triplet x64-windows
+        shell: bash
