@@ -13,7 +13,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
- 
+      
+      - name: Checkout nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        env:
+          GITLAB_AT: ${{ secrets.GITLAB_AT }}
+        run: |
+          git clone https://bakaoh:$GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
+          cd nunchuk-qt
+          git submodule update --depth 1 --init --recursive
+
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
