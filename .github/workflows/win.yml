@@ -49,6 +49,9 @@ jobs:
           Remove-Item -Recurse -Force bitcoin-qt
           Remove-Item -Recurse -Force libbitcoin_qt
           Remove-Item -Recurse -Force test_bitcoin-qt
+          Remove-Item -Recurse -Force test_bitcoin
+          Remove-Item -Recurse -Force testconsensus
+          Remove-Item -Recurse -Force bench_bitcoin
           py -3 msvc-autogen.py
-          msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build
+          msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
 
