@@ -43,8 +43,7 @@ jobs:
             D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/x64
           key: win-bitcoin-543693b92b954d186cb466a2f14b480f3bcf8c0b-1
           
-      - name: Build Bitcoin Core
-        if: steps.cache-contrib.outputs.cache-hit != 'true'
+      - name: Config Bitcoin Core
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
         run: |
           & "$env:VCPKG_ROOT\vcpkg" integrate install
@@ -52,8 +51,13 @@ jobs:
           git config user.name "Your Name"
           git am ${{runner.workspace}}\windeploynunchuk\patches\0001-Unload-qt.patch
           py -3 msvc-autogen.py
-          msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
           
+      - name: Build Bitcoin Core
+        if: steps.cache-contrib.outputs.cache-hit != 'true'
+        working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
+        run: |
+          msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
+
       - name: Build nunchuk-qt
         working-directory: ${{runner.workspace}}
         shell: cmd
