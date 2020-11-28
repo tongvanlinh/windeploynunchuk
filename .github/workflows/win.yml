@@ -43,12 +43,10 @@ jobs:
           
       - name: Build Bitcoin Core
         if: steps.cache-contrib.outputs.cache-hit != 'true'
+        continue-on-error: true
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
         run: |
           & "$env:VCPKG_ROOT\vcpkg" integrate install
-          Remove-Item -Recurse -Force bitcoin-qt
-          Remove-Item -Recurse -Force libbitcoin_qt
-          Remove-Item -Recurse -Force test_bitcoin-qt
           py -3 msvc-autogen.py
           msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
 
