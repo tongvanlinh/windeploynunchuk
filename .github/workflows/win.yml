@@ -41,11 +41,10 @@ jobs:
           path: |
             D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/vcpkg_installed
             D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/x64
-          key: win-543693b92b954d186cb466a2f14b480f3bcf8c0b-3
+          key: win-bitcoin-543693b92b954d186cb466a2f14b480f3bcf8c0b-1
           
       - name: Build Bitcoin Core
         if: steps.cache-contrib.outputs.cache-hit != 'true'
-        continue-on-error: true
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
         run: |
           & "$env:VCPKG_ROOT\vcpkg" integrate install
@@ -61,3 +60,4 @@ jobs:
         run: |
           del /S /q ${{runner.workspace}}\nunchuk-qt\contrib\libnunchuk\contrib\bitcoin\build_msvc\x64\Release
           copy /Y %VCPKG_ROOT%\installed\x64-windows\bin\event* %VCPKG_ROOT%\installed\x64-windows\lib
+  
