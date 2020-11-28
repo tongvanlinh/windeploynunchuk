@@ -49,13 +49,15 @@ jobs:
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
         run: |
           & "$env:VCPKG_ROOT\vcpkg" integrate install
+          git config user.email "you@example.com"
+          git config user.name "Your Name"
           git am ${{runner.workspace}}\windeploynunchuk\patches\0001-Unload-qt.patch
           py -3 msvc-autogen.py
           msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
-          del /S /q x64\Release
           
       - name: Build nunchuk-qt
         working-directory: ${{runner.workspace}}
         shell: cmd
         run: |
+          del /S /q ${{runner.workspace}}\nunchuk-qt\contrib\libnunchuk\contrib\bitcoin\build_msvc\x64\Release
           copy /Y %VCPKG_ROOT%\installed\x64-windows\bin\event* %VCPKG_ROOT%\installed\x64-windows\lib
