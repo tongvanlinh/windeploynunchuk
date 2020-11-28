@@ -50,3 +50,11 @@ jobs:
           py -3 msvc-autogen.py
           msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
 
+      - name: Build nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        shell: cmd
+        run: |
+          cmake -E make_directory ${{runner.workspace}}\build
+          cd build
+          cmake ${{runner.workspace}}\nunchuk-qt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+          cmake --build . --config Release -j8
