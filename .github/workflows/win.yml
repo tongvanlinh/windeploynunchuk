@@ -38,8 +38,10 @@ jobs:
         uses: actions/cache@v2
         id: cache-contrib
         with:
-          path: D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/x64
-          key: win-543693b92b954d186cb466a2f14b480f3bcf8c0b-1
+          path: |
+            D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/vcpkg_installed
+            D:/a/windeploynunchuk/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc/x64
+          key: win-543693b92b954d186cb466a2f14b480f3bcf8c0b-3
           
       - name: Build Bitcoin Core
         if: steps.cache-contrib.outputs.cache-hit != 'true'
@@ -49,4 +51,10 @@ jobs:
           & "$env:VCPKG_ROOT\vcpkg" integrate install
           py -3 msvc-autogen.py
           msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
-        
+          
+      - name: Build nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        shell: cmd
+        run: |
+          copy /Y %VCPKG_ROOT%\installed\x64-windows\bin\event* %VCPKG_ROOT%\installed\x64-windows\lib
+          del /S /q ${{runner.workspace}}nunchuk-qt\contrib\libnunchuk\contrib\bitcoin\build_msvc\x64\Release
