@@ -85,7 +85,6 @@ jobs:
           Copy-Item -Path "C:\Windows\System32\vcruntime*.dll" -Destination ".\nunchuk-windows\app"
           
       - name: Upload Artifact
-        if: steps.cache-get_version.outputs.VERSION == 'main'
         uses: 'actions/upload-artifact@v2'
         with:
           name: nunchuk-windows
