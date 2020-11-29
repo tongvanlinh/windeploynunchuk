@@ -77,8 +77,12 @@ jobs:
         run: |
           curl "https://github.com/bitcoin-core/HWI/releases/download/1.2.1/hwi-1.2.1-windows-amd64.zip" -O hwi.zip
           Expand-Archive -Force .\hwi.zip .
-          Copy-Item -Path "${{runner.workspace}}\build\Release" -Destination "${{runner.workspace}}\windeploynunchuk\nunchuk-windows\app" -Recurse
-          copy /Y hwi.exe ${{runner.workspace}}\windeploynunchuk\nunchuk-windows\app\
+          Copy-Item -Path "${{runner.workspace}}\build\Release" -Destination ".\nunchuk-windows\app" -Recurse
+          Copy-Item -Path ".\hwi.exe" -Destination ".\nunchuk-windows\app"
+          Copy-Item -Path "$env:VCPKG_ROOT\installed\x64-windows\bin\Qt5*.dll" -Destination ".\nunchuk-windows\app"
+          Copy-Item -Path "C:\Windows\System32\msvcp*.dll" -Destination ".\nunchuk-windows\app"
+          Copy-Item -Path "C:\Windows\System32\vccorlib*.dll" -Destination ".\nunchuk-windows\app"
+          Copy-Item -Path "C:\Windows\System32\vcruntime*.dll" -Destination ".\nunchuk-windows\app"
           
       - name: Upload Artifact
         if: steps.cache-get_version.outputs.VERSION == 'main'
