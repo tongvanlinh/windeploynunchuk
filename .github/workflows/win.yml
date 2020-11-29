@@ -73,6 +73,7 @@ jobs:
           
       - name: Deploy Zip
         working-directory: ${{runner.workspace}}/windeploynunchuk
+        shell: powershell 
         run: |
           curl "https://github.com/bitcoin-core/HWI/releases/download/1.2.1/hwi-1.2.1-windows-amd64.zip" -O hwi.zip
           Expand-Archive -Force .\hwi.zip .
