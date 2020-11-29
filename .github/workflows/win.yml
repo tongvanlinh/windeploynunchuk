@@ -2,7 +2,8 @@ name: win
 
 on:
   push:
-    branches: [ main ]
+    tags:
+    - 'v*'
 
   workflow_dispatch:
 
@@ -71,7 +72,7 @@ jobs:
           cmake ${{runner.workspace}}\nunchuk-qt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
           cmake --build . --config Release -j8
           
-      - name: Deploy Zip
+      - name: Create Zip
         working-directory: ${{runner.workspace}}/windeploynunchuk
         shell: powershell 
         run: |
@@ -79,11 +80,13 @@ jobs:
           Expand-Archive -Force .\hwi.zip .
           Copy-Item -Path "${{runner.workspace}}\build\Release" -Destination ".\nunchuk-windows\app" -Recurse
           Copy-Item -Path ".\hwi.exe" -Destination ".\nunchuk-windows\app"
+          Rename-Item -Path ".\nunchuk-windows\app\nunchuck-client-qt.exe" -NewName "nunchuk-client-qt.exe"
           Copy-Item -Path "$env:VCPKG_ROOT\installed\x64-windows\bin\Qt5*.dll" -Destination ".\nunchuk-windows\app"
           Copy-Item -Path "C:\Windows\System32\msvcp*.dll" -Destination ".\nunchuk-windows\app"
           Copy-Item -Path "C:\Windows\System32\vccorlib*.dll" -Destination ".\nunchuk-windows\app"
           Copy-Item -Path "C:\Windows\System32\vcruntime*.dll" -Destination ".\nunchuk-windows\app"
-          
+          Compress-Archive -Path ".\nunchuk-windows" -DestinationPath ".\nunchuk-windows.zip"
+
       - name: Upload Artifact
         uses: 'actions/upload-artifact@v2'
         with:
