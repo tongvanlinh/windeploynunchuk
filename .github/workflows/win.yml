@@ -77,7 +77,7 @@ jobs:
         run: |
           curl "https://github.com/bitcoin-core/HWI/releases/download/1.2.1/hwi-1.2.1-windows-amd64.zip" -O hwi.zip
           Expand-Archive -Force .\hwi.zip .
-          Copy-Item -Path "${{runner.workspace}}\build\Release\*" -Destination "${{runner.workspace}}\windeploynunchuk\nunchuk-windows\app\" -Recurse
+          Copy-Item -Path "${{runner.workspace}}\build\Release" -Destination "${{runner.workspace}}\windeploynunchuk\nunchuk-windows\app" -Recurse
           copy /Y hwi.exe nunchuk-windows\app\hwi.exe
           
       - name: Upload Artifact
