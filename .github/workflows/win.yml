@@ -61,6 +61,10 @@ jobs:
           msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8
           del /q ${{runner.workspace}}\nunchuk-qt\contrib\libnunchuk\contrib\bitcoin\build_msvc\x64\Release
 
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
       - name: Build nunchuk-qt
         working-directory: ${{runner.workspace}}
         shell: cmd
@@ -88,8 +92,33 @@ jobs:
           Compress-Archive -Path ".\nunchuk-windows" -DestinationPath ".\nunchuk-windows.zip"
 
       - name: Upload Artifact
+        if: steps.cache-get_version.outputs.VERSION == 'main'
         uses: 'actions/upload-artifact@v2'
         with:
           name: nunchuk-windows
           path: ${{runner.workspace}}/windeploynunchuk/nunchuk-windows/
       
+      - name: Create Release
+        if: steps.cache-get_version.outputs.VERSION != 'main'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: steps.cache-get_version.outputs.VERSION != 'main'
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ${{runner.workspace}}/windeploynunchuk/nunchuk-windows.zip
+          asset_name: nunchuk-windows-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
+
