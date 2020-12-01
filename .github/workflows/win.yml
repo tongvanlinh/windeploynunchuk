@@ -70,7 +70,6 @@ jobs:
         shell: cmd
         run: |
           copy /Y %VCPKG_ROOT%\installed\x64-windows\bin\event* %VCPKG_ROOT%\installed\x64-windows\lib
-          copy /Y ${{runner.workspace}}\windeploynunchuk\CMakeLists.txt ${{runner.workspace}}\nunchuk-qt\contrib\libnunchuk\CMakeLists.txt
           cmake -E make_directory ${{runner.workspace}}\build
           cd build
           cmake ${{runner.workspace}}\nunchuk-qt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
