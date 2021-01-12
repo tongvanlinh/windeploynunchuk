@@ -22,7 +22,8 @@ jobs:
         run: |
           git clone https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
           cd nunchuk-qt
-          git checkout sprint4
+          git branch -a
+          git show-ref
           git submodule update --depth 1 --init --recursive
 
       - name: Add msbuild to PATH
