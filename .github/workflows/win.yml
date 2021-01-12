@@ -20,7 +20,7 @@ jobs:
         env:
           GITLAB_AT: ${{ secrets.GITLAB_AT }}
         run: |
-          git clone https://gitlab.com/nunchuck/nunchuck-qt.git
+          git clone https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
           cd nunchuk-qt
           git checkout sprint4
           git submodule update --depth 1 --init --recursive
