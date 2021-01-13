@@ -20,7 +20,7 @@ jobs:
         env:
           GITLAB_AT: ${{ secrets.GITLAB_AT }}
         run: |
-          git clone https://tongvanlinh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt
+          git clone --branch sprint4 https://tongvanlinh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt
           cd nunchuk-qt
           git branch -a
           git show-ref
