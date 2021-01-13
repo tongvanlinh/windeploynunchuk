@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone --branch sprint4 https://tongvanlinh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt
           cd nunchuk-qt
-          git checkout remotes/origin/sprint4
+          git checkout sprint4
           git branch -a
           git show-ref
           git submodule update --depth 1 --init --recursive
