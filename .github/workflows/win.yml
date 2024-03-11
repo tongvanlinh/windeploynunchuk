@@ -14,16 +14,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Checkout nunchuk-qt
-        working-directory: ${{runner.workspace}}
-        env:
-          GITLAB_AT: ${{ secrets.GITLAB_AT }}
-        run: |
-          git clone https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
-          cd nunchuk-qt
-          git submodule update --init --recursive
-
+        
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
@@ -34,6 +25,16 @@ jobs:
           vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
           vcpkgTriplet: 'x64-windows'
           vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
+      
+      - name: Checkout nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        env:
+          GITLAB_AT: ${{ secrets.GITLAB_AT }}
+        run: |
+          git clone https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
+          cd nunchuk-qt
+          git submodule update --init --recursive
+
 
       - name: Config Bitcoin Core
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
