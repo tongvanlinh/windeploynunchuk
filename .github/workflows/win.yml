@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
           cd nunchuk-qt
-          git submodule update --depth 1 --init --recursive
+          git submodule update --init --recursive
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
