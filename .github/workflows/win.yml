@@ -17,6 +17,8 @@ jobs:
         
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+        with:
+          output-variables-file: ${{ github.workspace }}/output-variables.env
 
       - name: Restore from cache and install vcpkg
         uses: lukka/run-vcpkg@v5
