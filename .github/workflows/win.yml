@@ -24,7 +24,7 @@ jobs:
           vcpkgArguments: 'boost libevent berkeleydb sqlite3 sqlcipher zeromq qt5 qt5-graphicaleffects qt5-quickcontrols'
           vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
           vcpkgTriplet: 'x64-windows'
-         # vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
+          vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
       
       - name: Checkout nunchuk-qt
         working-directory: ${{runner.workspace}}
