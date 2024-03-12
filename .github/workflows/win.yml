@@ -20,6 +20,7 @@ jobs:
           echo "Current Working Directory:" $PWD
           echo ${{ runner.workspace }}
           cd ${{ runner.workspace }}
+          echo "Current Working Directory:" $PWD
         
       - name: Setup msbuild
         uses: microsoft/setup-msbuild@v2
