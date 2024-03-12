@@ -23,10 +23,6 @@ jobs:
       - name: Setup msbuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Add MSBuild to PATH
-        run: |
-          echo "::add-path::$(Agent.HomeDirectory)/tools/msbuild/Current/Bin"
-
       - name: Verify MSBuild installation
         run: msbuild /version
 
