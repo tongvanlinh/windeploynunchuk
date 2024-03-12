@@ -14,11 +14,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+      - name: Check environment
+        run: echo "Current Working Directory:" $PWD
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
-        run: | 
-          pwd
 
       - name: Setup anew (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11
