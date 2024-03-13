@@ -26,6 +26,6 @@ jobs:
       - name: run-vcpkg
         uses: lukka/run-vcpkg@v11.5
         with:
-          vcpkgDirectory: '$PWD/vcpkg'
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
 
       
