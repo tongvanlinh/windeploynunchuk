@@ -27,6 +27,7 @@ jobs:
         uses: lukka/run-vcpkg@v11.5
         with:
           vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          vcpkgConfig: ${{ github.workspace }}/vcpkg-configuration.json
           
       - name: Display vcpkg.json
         run: |
