@@ -18,32 +18,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-          # This is useful to avoid https://github.com/microsoft/vcpkg/issues/25349
-          # which is caused by missing Git history on the vcpkg submodule which ports 
-          # try to access. 
-          # Do not use if not needed, since it slows down the checkout of sources.
-          fetch-depth: 0
+        uses: actions/checkout@v4.1.1
         
-      - name: Setup msbuild
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Verify MSBuild installation
-        run: msbuild /version
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v2
         
-      - name: Install Visual Studio Build Tools
-        uses: microsoft/setup-vs-build-tools@v1
-        with:
-          vs-version: '16' # You can specify the version you need, like '16' for Visual Studio 2019
-          includeRecommended: true
-
-      - name: Setup anew (or from cache) vcpkg (and does not build any package)
-        uses: lukka/run-vcpkg@v5
-        with:
-          vcpkgArguments: 'boost libevent berkeleydb sqlite3 sqlcipher zeromq qt5 qt5-graphicaleffects qt5-quickcontrols'
-          vcpkgTriplet: 'x64-windows'
-          vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v11.5
 
       
