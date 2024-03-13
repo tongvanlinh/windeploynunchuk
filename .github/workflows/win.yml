@@ -25,5 +25,7 @@ jobs:
         
       - name: run-vcpkg
         uses: lukka/run-vcpkg@v11.5
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
 
       
