@@ -38,6 +38,6 @@ jobs:
         with:
           vcpkgArguments: 'boost libevent berkeleydb sqlite3 sqlcipher zeromq qt5 qt5-graphicaleffects qt5-quickcontrols'
           vcpkgTriplet: 'x64-windows'
-          vcpkgGitCommitId: 'a1b6a0046a28c09f4bcc8caa9eecec9a8e512152'
+          vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
 
       
