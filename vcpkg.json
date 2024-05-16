@@ -1,0 +1,23 @@
+{
+  "name": "nunchuk-qt",
+  "version-string": "0.0.1",
+  "dependencies": [
+    "sqlcipher",
+    "libevent",
+    "boost-format",
+    "boost-asio",
+    "boost-bind",
+    "boost-filesystem",
+    "boost-algorithm",
+    "boost-process",
+    "boost-signals2",
+    "boost-multi-index",
+    "berkeleydb",
+    "zeromq",
+    "qt5",
+    "qt5-graphicaleffects",
+    "qt5-quickcontrols",
+    "qtkeychain"
+  ],
+  "builtin-baseline": "8d8cec243e033d751c82fd16be5b2ff95ab28bb1"
+}
