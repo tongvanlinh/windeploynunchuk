@@ -1,4 +1,4 @@
-name: win
+name: win-test
 
 on:
   push:
@@ -7,30 +7,101 @@ on:
 
   workflow_dispatch:
 
+env:
+  VCPKG_BINARY_SOURCES: clear
+  VCPKG_DEFAULT_TRIPLET: 'x64-windows'
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        #os: [windows-2022, ubuntu-20.04, macos-12]
-        #os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-2019]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
-        
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v2
-        
-      - name: run-vcpkg
-        uses: lukka/run-vcpkg@v11.5
-        with:
-          vcpkgGitCommitId: '539a182d3773b9a84807b978c9684ba471446bf4'
-          
-      - name: Display vcpkg.json
-        run: |
-          find ${{ github.workspace }} -name "vcpkg.json" -print
-          cat ${{ github.workspace }}/vcpkg.json
 
-      
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v2
+        with:
+            msbuild-architecture: x64
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        id: runvcpkg
+        with:
+          vcpkgDirectory: 'D:/a/vcpkg'
+          vcpkgGitCommitId: '8d8cec243e033d751c82fd16be5b2ff95ab28bb1'
+          
+      - name: Checkout libolm
+        working-directory: ${{runner.workspace}}
+        run: |
+          git clone https://gitlab.matrix.org/matrix-org/olm --depth 1
+          cd olm
+          git submodule update --init --recursive
+
+      - name: Checkout nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        env:
+          GITLAB_AT: ${{ secrets.GITLAB_AT }} 
+        run: |
+          git clone -b online https://bakaoh:$env:GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
+          cd nunchuk-qt
+          git submodule update --init --recursive
+    
+      - name: Config Bitcoin Core
+        working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
+        run: |
+          git config user.email "you@example.com"
+          git config user.name "Your Name"
+          git am ${{runner.workspace}}\windeploynunchuk\patches\0001-Unload-qt.patch
+          & "$env:VCPKG_ROOT\vcpkg" integrate install
+          py -3 msvc-autogen.py
+
+      - name: Build Bitcoin Core
+        working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin/build_msvc
+        shell: cmd
+        run: |
+          set CL=/D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+          msbuild /m bitcoin.sln /p:Platform=x64 /p:Configuration=Release /t:build /m:8 /p:DefineConstants=_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+          set CL=/D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
+      - name: Setup cmake
+        uses: lukka/get-cmake@v3.29.2
+
+      - name: Copy files
+        working-directory: ${{runner.workspace}}
+        shell: cmd
+        run: |
+          copy /Y ${{runner.workspace}}\windeploynunchuk\vcpkg.json ${{runner.workspace}}\nunchuk-qt
+          copy /Y ${{runner.workspace}}\windeploynunchuk\CMakePresets.json ${{runner.workspace}}\nunchuk-qt
+          copy /Y ${{runner.workspace}}\windeploynunchuk\CMakePresets.json ${{runner.workspace}}\olm
+
+      - name: Build libolm
+        uses: lukka/run-cmake@v10
+        with:
+          cmakeListsTxtPath: '${{runner.workspace}}/olm/CMakeLists.txt'
+          configurePreset: ninja-multi-vcpkg
+          buildPreset: ninja-multi-vcpkg
+          buildPresetAdditionalArgs: "['--target install', '--config Release']"
+
+      - name: Config Nunchuk-qt
+        working-directory: ${{runner.workspace}}/nunchuk-qt
+        run: |
+          & "$env:VCPKG_ROOT\vcpkg" integrate install
+          
+      - name: Patch bbqr
+        working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bbqr-cpp
+        run: |
+          git config user.email "you@example.com"
+          git config user.name "Your Name"
+          git am ${{runner.workspace}}\windeploynunchuk\patches\0001-Add-namespace.patch
+          
+      - name: Build Nunchuk-qt
+        uses: lukka/run-cmake@v10
+        with:
+          cmakeListsTxtPath: '${{runner.workspace}}/nunchuk-qt/CMakeLists.txt'
+          configurePreset: ninja-multi-vcpkg
+          buildPreset: ninja-multi-vcpkg
+          buildPresetAdditionalArgs: "['--config Release']"
