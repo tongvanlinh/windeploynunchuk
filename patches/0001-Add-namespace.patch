@@ -1,0 +1,41 @@
+From ab01db89aa4fed96b71d44a321ab1b9ea57f2f45 Mon Sep 17 00:00:00 2001
+From: Bakaoh <batatsar@gmail.com>
+Date: Thu, 25 Apr 2024 10:59:39 +0700
+Subject: [PATCH] Add namespace
+
+---
+ src/strencoding.hpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/strencoding.hpp b/src/strencoding.hpp
+index aa27a67..67b8125 100644
+--- a/src/strencoding.hpp
++++ b/src/strencoding.hpp
+@@ -11,7 +11,7 @@
+ #include <string>
+ #include <vector>
+ 
+-namespace {
++namespace bbqr {
+ /** Helper class for the default infn argument to ConvertBits (just returns the input). */
+ struct IntIdentity {
+   [[maybe_unused]] int operator()(int x) const { return x; }
+@@ -30,8 +30,6 @@ constexpr std::array<ByteAsHex, 256> CreateByteToHexMap() {
+   return byte_to_hex;
+ }
+ 
+-}  // namespace
+-
+ /** Convert from one power-of-2 number base to another. */
+ template <int frombits, int tobits, bool pad, typename O, typename It, typename I = IntIdentity>
+ bool ConvertBits(O outfn, It it, It end, I infn = {}) {
+@@ -179,4 +177,6 @@ inline std::optional<std::vector<Byte>> TryParseHex(const std::string_view str)
+   return vch;
+ }
+ 
++}  // namespace bbqr
++
+ #endif
+-- 
+2.24.2 (Apple Git-127)
+

@@ -1,0 +1,175 @@
+From 4247b33cce4dbbbca5871c94ded8b1aa6a145208 Mon Sep 17 00:00:00 2001
+From: Bakaoh <batatsar@gmail.com>
+Date: Wed, 27 Mar 2024 16:51:07 +0700
+Subject: [PATCH] Unload qt
+
+---
+ build_msvc/bitcoin.sln         | 70 ----------------------------------
+ build_msvc/common.init.vcxproj |  3 +-
+ src/httpserver.cpp             |  2 +-
+ 3 files changed, 3 insertions(+), 72 deletions(-)
+
+diff --git a/build_msvc/bitcoin.sln b/build_msvc/bitcoin.sln
+index 7d8591c10b..920a225643 100644
+--- a/build_msvc/bitcoin.sln
++++ b/build_msvc/bitcoin.sln
+@@ -4,8 +4,6 @@ VisualStudioVersion = 16.0.28803.452
+ MinimumVisualStudioVersion = 10.0.40219.1
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoinconsensus", "libbitcoinconsensus\libbitcoinconsensus.vcxproj", "{2B384FA8-9EE1-4544-93CB-0D733C25E8CE}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testconsensus", "testconsensus\testconsensus.vcxproj", "{E78473E9-B850-456C-9120-276301E04C06}"
+-EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bitcoind", "bitcoind\bitcoind.vcxproj", "{D4513DDF-6013-44DC-ADCC-12EAF6D1F038}"
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoin_util", "libbitcoin_util\libbitcoin_util.vcxproj", "{B53A5535-EE9D-4C6F-9A26-F79EE3BC3754}"
+@@ -22,14 +20,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoin_wallet", "libbit
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoin_zmq", "libbitcoin_zmq\libbitcoin_zmq.vcxproj", "{792D487F-F14C-49FC-A9DE-3FC150F31C3F}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bitcoin", "test_bitcoin\test_bitcoin.vcxproj", "{A56B73DB-D46D-4882-8374-1FE3FFA08F07}"
+-EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoin_cli", "libbitcoin_cli\libbitcoin_cli.vcxproj", "{0667528C-D734-4009-ADF9-C0D6C4A5A5A6}"
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bitcoin-cli", "bitcoin-cli\bitcoin-cli.vcxproj", "{0B2D7431-F876-4A58-87BF-F748338CD3BF}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bench_bitcoin", "bench_bitcoin\bench_bitcoin.vcxproj", "{1125654E-E1B2-4431-8B5C-62EA9A2FEECB}"
+-EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bitcoin-tx", "bitcoin-tx\bitcoin-tx.vcxproj", "{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}"
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bitcoin-util", "bitcoin-util\bitcoin-util.vcxproj", "{D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}"
+@@ -42,14 +36,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsecp256k1", "libsecp256k
+ EndProject
+ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libleveldb", "libleveldb\libleveldb.vcxproj", "{18430FEF-6B61-4C53-B396-718E02850F1B}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libbitcoin_qt", "libbitcoin_qt\libbitcoin_qt.vcxproj", "{2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}"
+-EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bitcoin-qt", "bitcoin-qt\bitcoin-qt.vcxproj", "{7E99172D-7FF2-4CB6-B736-AC9B76ED412A}"
+-EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtest_util", "libtest_util\libtest_util.vcxproj", "{868474FD-35F6-4400-8EED-30A33E7521D4}"
+-EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bitcoin-qt", "test_bitcoin-qt\test_bitcoin-qt.vcxproj", "{51201D5E-D939-4854-AE9D-008F03FF518E}"
+-EndProject
+ Global
+     GlobalSection(SolutionConfigurationPlatforms) = preSolution
+         Debug|x64 = Debug|x64
+@@ -66,14 +52,6 @@ Global
+         {2B384FA8-9EE1-4544-93CB-0D733C25E8CE}.Release|x64.Build.0 = Release|x64
+         {2B384FA8-9EE1-4544-93CB-0D733C25E8CE}.Release|x86.ActiveCfg = Release|Win32
+         {2B384FA8-9EE1-4544-93CB-0D733C25E8CE}.Release|x86.Build.0 = Release|Win32
+-        {E78473E9-B850-456C-9120-276301E04C06}.Debug|x64.ActiveCfg = Debug|x64
+-        {E78473E9-B850-456C-9120-276301E04C06}.Debug|x64.Build.0 = Debug|x64
+-        {E78473E9-B850-456C-9120-276301E04C06}.Debug|x86.ActiveCfg = Debug|Win32
+-        {E78473E9-B850-456C-9120-276301E04C06}.Debug|x86.Build.0 = Debug|Win32
+-        {E78473E9-B850-456C-9120-276301E04C06}.Release|x64.ActiveCfg = Release|x64
+-        {E78473E9-B850-456C-9120-276301E04C06}.Release|x64.Build.0 = Release|x64
+-        {E78473E9-B850-456C-9120-276301E04C06}.Release|x86.ActiveCfg = Release|Win32
+-        {E78473E9-B850-456C-9120-276301E04C06}.Release|x86.Build.0 = Release|Win32
+         {D4513DDF-6013-44DC-ADCC-12EAF6D1F038}.Debug|x64.ActiveCfg = Debug|x64
+         {D4513DDF-6013-44DC-ADCC-12EAF6D1F038}.Debug|x64.Build.0 = Debug|x64
+         {D4513DDF-6013-44DC-ADCC-12EAF6D1F038}.Debug|x86.ActiveCfg = Debug|Win32
+@@ -138,14 +116,6 @@ Global
+         {792D487F-F14C-49FC-A9DE-3FC150F31C3F}.Release|x64.Build.0 = Release|x64
+         {792D487F-F14C-49FC-A9DE-3FC150F31C3F}.Release|x86.ActiveCfg = Release|Win32
+         {792D487F-F14C-49FC-A9DE-3FC150F31C3F}.Release|x86.Build.0 = Release|Win32
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Debug|x64.ActiveCfg = Debug|x64
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Debug|x64.Build.0 = Debug|x64
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Debug|x86.ActiveCfg = Debug|Win32
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Debug|x86.Build.0 = Debug|Win32
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Release|x64.ActiveCfg = Release|x64
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Release|x64.Build.0 = Release|x64
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Release|x86.ActiveCfg = Release|Win32
+-        {A56B73DB-D46D-4882-8374-1FE3FFA08F07}.Release|x86.Build.0 = Release|Win32
+         {0667528C-D734-4009-ADF9-C0D6C4A5A5A6}.Debug|x64.ActiveCfg = Debug|x64
+         {0667528C-D734-4009-ADF9-C0D6C4A5A5A6}.Debug|x64.Build.0 = Debug|x64
+         {0667528C-D734-4009-ADF9-C0D6C4A5A5A6}.Debug|x86.ActiveCfg = Debug|Win32
+@@ -162,14 +132,6 @@ Global
+         {0B2D7431-F876-4A58-87BF-F748338CD3BF}.Release|x64.Build.0 = Release|x64
+         {0B2D7431-F876-4A58-87BF-F748338CD3BF}.Release|x86.ActiveCfg = Release|Win32
+         {0B2D7431-F876-4A58-87BF-F748338CD3BF}.Release|x86.Build.0 = Release|Win32
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Debug|x64.ActiveCfg = Debug|x64
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Debug|x64.Build.0 = Debug|x64
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Debug|x86.ActiveCfg = Debug|Win32
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Debug|x86.Build.0 = Debug|Win32
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Release|x64.ActiveCfg = Release|x64
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Release|x64.Build.0 = Release|x64
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Release|x86.ActiveCfg = Release|Win32
+-        {1125654E-E1B2-4431-8B5C-62EA9A2FEECB}.Release|x86.Build.0 = Release|Win32
+         {D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Debug|x64.ActiveCfg = Debug|x64
+         {D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Debug|x64.Build.0 = Debug|x64
+         {D3022AF6-AD33-4CE3-B358-87CB6A1B29CF}.Debug|x86.ActiveCfg = Debug|Win32
+@@ -210,38 +172,6 @@ Global
+         {18430FEF-6B61-4C53-B396-718E02850F1B}.Release|x64.Build.0 = Release|x64
+         {18430FEF-6B61-4C53-B396-718E02850F1B}.Release|x86.ActiveCfg = Release|Win32
+         {18430FEF-6B61-4C53-B396-718E02850F1B}.Release|x86.Build.0 = Release|Win32
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Debug|x64.ActiveCfg = Debug|x64
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Debug|x64.Build.0 = Debug|x64
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Debug|x86.ActiveCfg = Debug|Win32
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Debug|x86.Build.0 = Debug|Win32
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Release|x64.ActiveCfg = Release|x64
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Release|x64.Build.0 = Release|x64
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Release|x86.ActiveCfg = Release|Win32
+-        {2B4ABFF8-D1FD-4845-88C9-1F3C0A6512BF}.Release|x86.Build.0 = Release|Win32
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Debug|x64.ActiveCfg = Debug|x64
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Debug|x64.Build.0 = Debug|x64
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Debug|x86.ActiveCfg = Debug|Win32
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Debug|x86.Build.0 = Debug|Win32
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Release|x64.ActiveCfg = Release|x64
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Release|x64.Build.0 = Release|x64
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Release|x86.ActiveCfg = Release|Win32
+-        {7E99172D-7FF2-4CB6-B736-AC9B76ED412A}.Release|x86.Build.0 = Release|Win32
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Debug|x64.ActiveCfg = Debug|x64
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Debug|x64.Build.0 = Debug|x64
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Debug|x86.ActiveCfg = Debug|Win32
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Debug|x86.Build.0 = Debug|Win32
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Release|x64.ActiveCfg = Release|x64
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Release|x64.Build.0 = Release|x64
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Release|x86.ActiveCfg = Release|Win32
+-        {868474FD-35F6-4400-8EED-30A33E7521D4}.Release|x86.Build.0 = Release|Win32
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Debug|x64.ActiveCfg = Debug|x64
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Debug|x64.Build.0 = Debug|x64
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Debug|x86.ActiveCfg = Debug|Win32
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Debug|x86.Build.0 = Debug|Win32
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Release|x64.ActiveCfg = Release|x64
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Release|x64.Build.0 = Release|x64
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Release|x86.ActiveCfg = Release|Win32
+-        {51201D5E-D939-4854-AE9D-008F03FF518E}.Release|x86.Build.0 = Release|Win32
+     EndGlobalSection
+     GlobalSection(SolutionProperties) = preSolution
+         HideSolutionNode = FALSE
+diff --git a/build_msvc/common.init.vcxproj b/build_msvc/common.init.vcxproj
+index 6ea018d846..032ffe96b8 100644
+--- a/build_msvc/common.init.vcxproj
++++ b/build_msvc/common.init.vcxproj
+@@ -14,6 +14,7 @@
+     <VcpkgUseStatic>true</VcpkgUseStatic>
+     <VcpkgAutoLink>true</VcpkgAutoLink>
+     <VcpkgConfiguration>$(Configuration)</VcpkgConfiguration>
++    <VcpkgAdditionalInstallOptions>--allow-unsupported</VcpkgAdditionalInstallOptions>
+     <VcpkgTriplet Condition="'$(Platform)'=='Win32'">x86-windows-static</VcpkgTriplet>
+     <VcpkgTriplet Condition="'$(Platform)'=='x64'">x64-windows-static</VcpkgTriplet>
+   </PropertyGroup>
+@@ -104,7 +105,7 @@
+     </ClCompile>
+     <Link>
+       <SubSystem>Console</SubSystem>
+-      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;Shlwapi.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>bcrypt.lib;Iphlpapi.lib;ws2_32.lib;Shlwapi.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <RandomizedBaseAddress>true</RandomizedBaseAddress>
+     </Link>
+     <Lib>
+diff --git a/src/httpserver.cpp b/src/httpserver.cpp
+index 8741ad9b86..4dc2142126 100644
+--- a/src/httpserver.cpp
++++ b/src/httpserver.cpp
+@@ -598,7 +598,7 @@ CService HTTPRequest::GetPeer() const
+         // evhttp retains ownership over returned address string
+         const char* address = "";
+         uint16_t port = 0;
+-        evhttp_connection_get_peer(con, (char**)&address, &port);
++        evhttp_connection_get_peer(con, &address, &port);
+         peer = LookupNumeric(address, port);
+     }
+     return peer;
+-- 
+2.24.2 (Apple Git-127)
+
